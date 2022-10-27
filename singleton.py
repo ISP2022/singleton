@@ -9,10 +9,13 @@ class Singleton(type):
 
        Usage: class MyClass(BaseClass, metaclass=Singleton):
     """
-    # A dictionary of classes for which a Singleton instance exists,
-    # so that Singleton can be the metaclass of several classes.
+    # A dictionary of classes for which a Singleton instance exists.
     _instances = {}
+    
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            # call the class's constructor
+            the_singleton = super(Singleton, cls).__call__(*args, **kwargs)
+            # add it to the dict of known classes & their singletons
+            cls._instances[cls] = the_singleton
         return cls._instances[cls]
